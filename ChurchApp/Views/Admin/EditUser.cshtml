@@ -1,0 +1,87 @@
+﻿@using Newtonsoft.Json
+@model ChurchApp.Models.User
+
+@{
+    ViewData["Title"] = "EditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="content">
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <a class="btn btn-info" asp-action="ViewUsers">Back to List</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-12">
+            <div class="card-header">
+                Edit User
+            </div>
+            <div class="card-body">
+                <form asp-action="EditUser">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="IdUser" />
+                    <input type="hidden" asp-for="IdChurch" />
+                    <input type="hidden" asp-for="IdMember" />
+                
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                   
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+      <div class="card col-12">
+            <div class="card-header">
+                Manage profils
+            </div>
+            <div class="card-body">
+                <form asp-action="UpdateProfils">
+                    <input type="hidden" asp-for="IdUser" />
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="Profils" class="control-label">Profils</label>
+                            <select id="listProfiles" name="Profils" class="form-control select2-multiple" asp-items="ViewBag.IdProfil" multiple></select>
+                        </div>
+                      
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var listProfils = $("#listProfiles")
+        var list  = @Html.Raw(JsonConvert.SerializeObject(ViewBag.listprofilExist));
+
+        console.log(list)
+        listProfils.val(list);
+        
+    </script>
+
+    }

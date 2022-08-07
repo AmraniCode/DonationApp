@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Church-App</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ChurchApp.styles.css" asp-append-version="true" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/adminlte/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/adminlte/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/adminlte/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="~/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
+    <link rel="stylesheet" href="~/adminlte/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="~/libExt/jquery.dataTables.css">
+      <link href="~/libExt/select2.min.css" rel="stylesheet" />
+    <script src="~/libExt/select2.min.js"></script>
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="~/assets/icon.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Logout" asp-controller="Auth" role="button">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a asp-action="Index" asp-controller="Home" class="brand-link">
+                <img src="~/assets/icon.png" alt="Church Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">@Context.Session.GetString(Helper.CHURCH_NAME)</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        @if (Context.Session.GetString(Helper.PROFILS).Contains(Helper.ADMIN_PROFIL))
+                        {
+                            <img src="~/assets/admin.svg" class="img-circle elevation-2" alt="User Image">
+                        }
+                        else
+                        {
+                            <img src="~/assets/member.svg" class="img-circle elevation-2" alt="User Image">
+                        }
+                    </div>
+                    <div class="info">
+                        <a asp-action="Index" asp-controller="Home" class="d-block">@Context.Session.GetString(Helper.NAME) @Context.Session.GetString(Helper.SURNAME) </a>
+                    </div>
+                </div>
+
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                             with font-awesome or any other icon font library -->
+                        @{
+                            var controller = ViewContext.RouteData.Values["controller"].ToString();
+                            var action = ViewContext.RouteData.Values["action"].ToString();
+                        }
+
+                        @if (Context.Session.GetString(Helper.PROFILS).Contains(Helper.ADMIN_PROFIL))
+                        {
+                            <li class="nav-item menu-open">
+                                <a href="#" class="nav-link active">
+                                    <i class="fas fa-people-arrows"></i>
+                                    <p>
+                                        Members management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="AddMember" asp-controller="Admin" class='nav-link @(action == "AddMember"?"active":"")'>
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add Memeber</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-action="ViewMembers" asp-controller="Admin" class="nav-link @(action == "ViewMembers"?"active":"")">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>View Members</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item menu-open">
+                                <a href="#" class="nav-link active">
+                                    <i class="fas fa-users"></i>
+                                    <p>
+                                        User management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="AddUser" asp-controller="Admin" class='nav-link @(action == "AddUser"?"active":"")'>
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add User</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-action="ViewUsers" asp-controller="Admin" class="nav-link @(action == "ViewUsers"?"active":"")">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>View Users</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                <p>
+                                    Donation management
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @if (Context.Session.GetString(Helper.PROFILS).Contains(Helper.MEMBER_PROFIL))
+                                {
+                                    <li class="nav-item">
+                                        <a asp-action="MyDonations" asp-controller="Donation" class="nav-link @(action == "MyDonations"?"active":"")">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>My Donations</p>
+                                        </a>
+                                    </li>
+                                }
+                                @if (Context.Session.GetString(Helper.PROFILS).Contains(Helper.ADMIN_PROFIL))
+                                {
+                                      <li class="nav-item">
+                                        <a asp-action="DonationReport" asp-controller="Report" class="nav-link @(action == "DonationReport"?"active":"")">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Reports</p>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @*   <!-- Content Header (Page header) -->
+            <div class="content-header">
+            <div class="container-fluid">
+            <div class="row mb-2">
+            <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard v1</li>
+            </ol>
+            </div><!-- /.col -->
+            </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->*@
+            <!-- Main content -->
+            <section class="content p-4">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; @DateTime.Now.Year </strong>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/adminlte/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/adminlte/plugins/moment/moment.min.js"></script>
+    <script src="~/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.js"></script>
+
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/adminlte/dist/js/pages/dashboard.js"></script>
+
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="~/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/adminlte/plugins/toastr/toastr.min.js"></script>
+
+
+    <script type="text/javascript" charset="utf8" src="~/libExt/jquery.dataTables.js"></script>
+    <script src="~/libExt/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable();
+            $('.select2').select2({
+                theme: "classic"
+            });
+
+            $(".select2-multiple").select2({
+                theme: "classic"
+            });
+        })
+
+    </script>
+    @Html.Partial("_Alert_PartialView");
+    @Html.Partial("_ValidationScriptsPartial");
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

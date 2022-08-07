@@ -1,0 +1,49 @@
+﻿
+<script>
+    @{
+        ViewBag.message = ViewBag.message == null ? "" : ViewBag.message;
+        ViewBag.state = ViewBag.state == null ? 0 : ViewBag.state;
+    }
+
+
+    $(document).ready(function() {
+
+        @{
+            if (ViewBag.state == Helper.FAILD_STATE || ViewBag.state == Helper.SUCCESS_STATE)
+            {
+            if (ViewBag.state == Helper.FAILD_STATE)
+            {
+                @:runderToast("error");
+        }
+            else
+            {
+            if (ViewBag.state == Helper.FAILD_STATE)
+            {
+                @:runderToast("success");
+        }
+            }
+
+            }
+            else
+            {
+                @:console.log("No alert")
+        }
+            }
+    });
+
+
+    function runderToast(type) {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        Toast.fire({
+            icon: type,
+            title: '@ViewBag.message'
+        })
+    }
+
+
+</script>

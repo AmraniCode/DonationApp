@@ -1,0 +1,50 @@
+﻿
+<div class="container">
+    <div class="w-100">
+        <canvas id="myStatistics"></canvas>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <a asp-action="" class="btn btn-success">Donations by members</a>
+            <a asp-action="" class="btn btn-warning">Total donation by years</a>
+            <a asp-action="" class="btn btn-info">Contact/mailing list</a>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script>
+        const labels = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Donation statistics',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myStatistics'),
+            config
+        );
+    </script>
+}
